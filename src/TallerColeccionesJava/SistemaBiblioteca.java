@@ -1,6 +1,8 @@
 package TallerColeccionesJava;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SistemaBiblioteca {
@@ -14,4 +16,27 @@ public class SistemaBiblioteca {
         return catalogo.get(codigo);
     }
 
+    public void mostrarCatalogo() {
+        System.out.println("~~~~~~~~~~~~Catálogo de Materiales~~~~~~~~~~~~~~");
+        for (Map.Entry<String, Material> entry : catalogo.entrySet()) {
+            entry.getValue().mostrarInfo();
+        }
+    }
+
+    private Map<String, List<String>> ListaEspera = new HashMap<>();
+
+    public void anotarEnLista(String codigoMaterial, String usuario) {
+        if (!ListaEspera.containsKey(codigoMaterial)) {
+            ListaEspera.put(codigoMaterial, new ArrayList<>());
+        }
+        ListaEspera.get(codigoMaterial).add(usuario);
+    }
+
+    public String atenderSiguiente(String codigoMaterial) {
+        List<String> fila = ListaEspera.get(codigoMaterial);
+        if (fila != null && !fila.isEmpty()) {
+            return fila.remove(0);
+        }
+        return null;
+    }
 }
